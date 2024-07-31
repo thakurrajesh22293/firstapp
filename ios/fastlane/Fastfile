@@ -23,12 +23,6 @@ platform :ios do
 
   desc "Releases our app to the App Store"
   lane :release_app do
-    increment_version_number(
-      version_number: latest_testflight_build_number + 1
-    )
-    increment_build_number(
-      build_number: latest_testflight_build_number + 1
-    )
     export_app
     upload_app
   end
