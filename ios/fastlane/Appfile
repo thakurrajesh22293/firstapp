@@ -1,0 +1,9 @@
+# fastlane/Appfile
+
+# Your Apple ID
+apple_id("tim@venchurave.com")
+
+# Environment variable for app-specific password
+# Note: App-specific passwords should not be hard-coded here for security reasons
+
+app_specific_password("hzru-kieg-ccdw-vkhv")

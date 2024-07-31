@@ -1,0 +1,16 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Deploy iOS Application
+          caches:
+            - bundler
+          script:
+            - chmod +x ./ci_script.sh
+            - ./ci_script.sh
+
+definitions:
+  caches:
+    bundler: ./vendor/bundle
