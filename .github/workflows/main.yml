@@ -41,3 +41,23 @@ jobs:
       run: |
         chmod +x ./ci_script.sh
         ./ci_script.sh
+
+    - name: Build and Test with Xcode
+      run: |
+        xcodebuild -workspace firstApp.xcworkspace \
+                    -scheme firstApp \
+                    -sdk iphonesimulator \
+                    -destination 'platform=iOS Simulator,name=iPhone 14' \
+                    build test | xcpretty
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ios-build
+        path: ios/build
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: ios-test-results
+        path: ios/build/reports
