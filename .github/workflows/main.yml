@@ -1,0 +1,43 @@
+name: iOS CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Ruby 2.6
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+
+    - name: Install Bundler
+      run: gem install bundler
+
+    - name: Install dependencies
+      run: |
+        cd ios
+        bundle install
+
+    - name: Install Fastlane
+      run: gem install fastlane
+
+    - name: Set up Xcode
+      run: |
+        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+        sudo xcodebuild -license accept
+
+    - name: Run CI Script
+      run: |
+        chmod +x ./ci_script.sh
+        ./ci_script.sh
