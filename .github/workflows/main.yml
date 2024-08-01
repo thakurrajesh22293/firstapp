@@ -22,14 +22,18 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
+          cd ios  # Navigate to the directory containing the Gemfile
           bundle install
 
       - name: Set up Xcode
         run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app  # Adjust to the Xcode version you need
 
       - name: Install CocoaPods
-        run: bundle exec pod install --repo-update
+        run: |
+          cd ios  # Navigate to the directory containing the Podfile
+          bundle exec pod install --repo-update
 
       - name: Run deployment script
-        run: ci_script.sh
-       
+        run: |
+          cd ios  # Navigate to the directory containing the deployment script
+          ./ci_script.sh
