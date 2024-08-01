@@ -31,7 +31,7 @@ jobs:
           cd ios
           bundle exec fastlane --version  # Ensures Fastlane is installed and working
 
-      - name: Run deployment script
+      - name: Run Fastlane
         run: |
-          chmod +x ci_script.sh
-          ./ci_script.sh
+          cd ios
+          bundle exec fastlane release_app
