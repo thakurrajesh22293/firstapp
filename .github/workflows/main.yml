@@ -19,18 +19,27 @@ jobs:
         with:
           ruby-version: 3.0  # Adjust to the version you need
 
-      - name: Install dependencies
+      - name: Install Bundler
+        run: gem install bundler
+
+      - name: Install Dependencies
         run: |
-          gem install bundler
           cd ios  # Navigate to the directory containing the Gemfile
           bundle install
 
-      - name: Install Fastlane
+      - name: Update Fastlane
+        run: gem install fastlane
+
+      - name: Verify Fastlane Version
         run: |
           cd ios
-          bundle exec fastlane --version  # Ensures Fastlane is installed and working
+          bundle exec fastlane --version  # Ensure Fastlane is installed and working
 
-      - name: Run deployment script
+      - name: Run Deployment Script
         run: |
           chmod +x ci_script.sh
           ./ci_script.sh
+
+      - name: Print Fastlane Gym Log
+        if: failure()
+        run: cat ios/output/gym_output.log
