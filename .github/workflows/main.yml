@@ -1,12 +1,10 @@
-name: iOS CI
+name: iOS Deployment
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # Adjust this to your main branch
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,48 +14,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Ruby 3.0
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
-
-      - name: Install Bundler
-        run: gem install bundler
+          ruby-version: 2.7  # Adjust to the version you need
 
       - name: Install dependencies
         run: |
-          cd ios
+          gem install bundler
           bundle install
 
-      - name: Install Fastlane
-        run: gem install fastlane
-
       - name: Set up Xcode
-        run: |
-          sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-          sudo xcodebuild -license accept
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app  # Adjust to the Xcode version you need
 
-      - name: Run CI Script
-        run: |
-          chmod +x ./ci_script.sh
-          ./ci_script.sh
+      - name: Install CocoaPods
+        run: bundle exec pod install --repo-update
 
-      - name: Build and Test with Xcode
-        run: |
-          xcodebuild -workspace ios/firstApp.xcworkspace \
-                      -scheme firstApp \
-                      -sdk iphonesimulator \
-                      -destination 'platform=iOS Simulator,name=iPhone 14' \
-                      build test | xcpretty
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-build
-          path: ios/build
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-test-results
-          path: ios/build/reports
+      - name: Run deployment script
+        run: ci_script.sh
+       
