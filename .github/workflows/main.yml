@@ -17,17 +17,21 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0  # Adjust to the version you need
+          ruby-version: 2.6  # Adjust to the version you need
 
       - name: Install dependencies
         run: |
           gem install bundler
           cd ios  # Navigate to the directory containing the Gemfile
           bundle install
-          
- 
+
+      - name: Install Fastlane
+        run: |
+          cd ios
+          bundle exec fastlane --version  # Ensures Fastlane is installed and working
 
       - name: Run deployment script
         run: |
-          cd ios  # Navigate to the directory containing the deployment script
+          cd ios
+          chmod +x ci_script.sh
           ./ci_script.sh
