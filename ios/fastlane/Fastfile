@@ -35,7 +35,8 @@ platform :ios do
       clean: true,
       export_xcargs: "-allowProvisioningUpdates",
       output_name: "ReleaseApp.ipa",
-      output_directory: "./build"
+      output_directory: "./build",
+      export_method: "app-store" # Ensure export method is correct
     )
   end
 
