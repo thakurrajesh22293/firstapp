@@ -1,45 +1,58 @@
-name: iOS Deployment
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
 
-on:
-  push:
-    branches:
-      - main  # Adjust this to your main branch
-  workflow_dispatch:
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
 
-jobs:
-  build:
-    runs-on: macos-latest
+default_platform(:ios)
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+platform :ios do
+  desc "Description of what the lane does"
+  lane :custom_lane do
+    # add actions here: https://docs.fastlane.tools/actions
+  end
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0  # Adjust to the version you need
+  desc "Releases our app to the App Store"
+  lane :release_app do
+    export_app
+    upload_app
+  end
 
-      - name: Install Bundler
-        run: gem install bundler
+  desc "To export our app"
+  lane :export_app do
+    gym(
+      workspace: "firstApp.xcworkspace",
+      scheme: "firstApp",
+      clean: true,
+      export_xcargs: "-allowProvisioningUpdates",
+      output_name: "ReleaseApp.ipa",
+      output_directory: "./build"
+    )
+  end
 
-      - name: Install Dependencies
-        run: |
-          cd ios  # Navigate to the directory containing the Gemfile
-          bundle install
-
-      - name: Update Fastlane
-        run: gem install fastlane
-
-      - name: Verify Fastlane Version
-        run: |
-          cd ios
-          bundle exec fastlane --version  # Ensure Fastlane is installed and working
-
-      - name: Run Deployment Script
-        run: |
-          chmod +x ci_script.sh
-          ./ci_script.sh
-
-      - name: Print Fastlane Gym Log
-        if: failure()
-        run: cat ios/output/gym_output.log
+  desc "To deliver our app"
+  lane :upload_app do
+    deliver(
+      ipa: "./build/ReleaseApp.ipa", # Ensure the path is correct
+      skip_screenshots: true,
+      force: true,
+      api_key: app_store_connect_api_key(
+        key_id: "4H4SNV6S4X",
+        issuer_id: "5a79245e-a76f-45fc-b6d7-c1282c9063c6",
+        key_filepath: "./AuthKey_4H4SNV6S4X.p8" # Make sure the path is correct
+      ),
+      app_identifier: "com.rajeshapp.ios",
+      team_id: "BW7PGH2KRS",
+      automatic_release: true # Ensures that the release type is set automatically
+    )
+  end
+end
