@@ -30,7 +30,7 @@ platform :ios do
   desc "To export our app"
   lane :export_app do
     gym(
-      workspace: "ios/firstApp.xcworkspace",
+      workspace: "firstApp.xcworkspace",
       scheme: "firstApp",
       clean: true,
       export_xcargs: "-allowProvisioningUpdates",
