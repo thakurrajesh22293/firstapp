@@ -1,26 +1,6 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
-  end
-
   desc "Releases our app to the App Store"
   lane :release_app do
     export_app
@@ -36,24 +16,24 @@ platform :ios do
       export_xcargs: "-allowProvisioningUpdates",
       output_name: "ReleaseApp.ipa",
       output_directory: "./build",
-      export_method: "app-store" # Ensure export method is correct
+      export_method: "app-store"
     )
   end
 
   desc "To deliver our app"
   lane :upload_app do
     deliver(
-      ipa: "./build/ReleaseApp.ipa", # Ensure the path is correct
+      ipa: "./build/ReleaseApp.ipa",
       skip_screenshots: true,
       force: true,
       api_key: app_store_connect_api_key(
         key_id: "4H4SNV6S4X",
         issuer_id: "5a79245e-a76f-45fc-b6d7-c1282c9063c6",
-        key_filepath: "./AuthKey_4H4SNV6S4X.p8" # Make sure the path is correct
+        key_filepath: "./AuthKey_4H4SNV6S4X.p8"
       ),
       app_identifier: "com.rajeshapp.ios",
       team_id: "BW7PGH2KRS",
-      automatic_release: true # Ensures that the release type is set automatically
+      automatic_release: true
     )
   end
 end
