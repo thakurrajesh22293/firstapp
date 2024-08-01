@@ -3,7 +3,7 @@ name: iOS Deployment
 on:
   push:
     branches:
-      - main  # Adjust this to your main branch
+      - main
   workflow_dispatch:
 
 jobs:
@@ -17,21 +17,24 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0  # Adjust to the version you need
+          ruby-version: 3.0
 
       - name: Install dependencies
         run: |
           gem install bundler
-          cd ios  # Navigate to the directory containing the Gemfile
+          cd ios
           bundle install
 
       - name: Install Fastlane
         run: |
           gem install fastlane
           cd ios
-          bundle exec fastlane --version  # Ensures Fastlane is installed and working
+          bundle exec fastlane --version
 
       - name: Run Fastlane
         run: |
           cd ios
           bundle exec fastlane release_app
+        env:
+          # Add any environment variables here
+          APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
