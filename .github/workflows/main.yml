@@ -25,10 +25,7 @@ jobs:
           cd ios  # Navigate to the directory containing the Gemfile
           bundle install
           
-      - name: Install CocoaPods
-        run: |
-          cd ios  # Navigate to the directory containing the Podfile
-          bundle exec pod install --repo-update
+ 
 
       - name: Run deployment script
         run: |
