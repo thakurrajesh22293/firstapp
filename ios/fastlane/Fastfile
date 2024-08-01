@@ -35,20 +35,21 @@ platform :ios do
       clean: true,
       export_xcargs: "-allowProvisioningUpdates",
       output_name: "ReleaseApp.ipa",
-      output_directory: "./build"
+      output_directory: "./build",
+      output_type: "ipa" # Specify output type explicitly
     )
   end
 
   desc "To deliver our app"
   lane :upload_app do
     deliver(
-      ipa: "./ios/build/ReleaseApp.ipa",
+      ipa: "./build/ReleaseApp.ipa", # Ensure the path is correct
       skip_screenshots: true,
       force: true,
       api_key: app_store_connect_api_key(
         key_id: "4H4SNV6S4X",
         issuer_id: "5a79245e-a76f-45fc-b6d7-c1282c9063c6",
-        key_filepath: "/Users/ankush/Desktop/firstApp/AuthKey_4H4SNV6S4X.p8"
+        key_filepath: "./AuthKey_4H4SNV6S4X.p8" # Make sure the path is correct
       ),
       app_identifier: "com.rajeshapp.ios",
       team_id: "BW7PGH2KRS",
