@@ -31,18 +31,11 @@ jobs:
           cd ios
           bundle exec fastlane --version
 
-      - name: Set up Xcode
-        run: sudo xcode-select -s /Applications/Xcode_14.0.app
-
-      - name: Run Fastlane
-        run: |
-          cd ios
-          bundle exec fastlane release_app
-        env:
-          # Add any environment variables here
-          APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
-
       - name: Run Xcode build with provisioning updates
         run: |
           cd ios
           xcodebuild -workspace firstApp.xcworkspace -scheme firstapp -configuration Release -allowProvisioningUpdates
+        env:
+          # Add any environment variables here
+          APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
+          CI: true
