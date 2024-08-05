@@ -8,9 +8,17 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Navigate to fastlane directory
-        run: cd ios/fastlane
-      - name: Run Fastlane
-        run: fastlane release_app
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0' # specify the Ruby version if needed
+      - name: Install dependencies
+        run: |
+          cd ios
+          bundle install
+      - name: Navigate to fastlane directory and run Fastlane
+        run: |
+          cd ios/fastlane
+          bundle exec fastlane release_app
         env:
           APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
