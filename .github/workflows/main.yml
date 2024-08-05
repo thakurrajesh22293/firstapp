@@ -1,44 +1,25 @@
-default_platform(:ios)
-
-platform :ios do
-  desc "Releases our app to the App Store"
-  lane :release_app do
-    export_app
-    upload_app
-  end
-
-  desc "To export our app"
-  lane :export_app do
-    gym(
-      workspace: "firstApp.xcworkspace",
-      scheme: "firstApp",
-      clean: true,
-      export_xcargs: "-allowProvisioningUpdates", # Allows automatic profile updates
-      output_name: "ReleaseApp.ipa",
-      output_directory: "./build",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          "com.rajeshapp.ios" => "fastlane/Rajesh_App.mobileprovision" # Path to provisioning profile
-        }
-      }
-    )
-  end
-
-  desc "To deliver our app"
-  lane :upload_app do
-    deliver(
-      ipa: "./build/ReleaseApp.ipa",
-      skip_screenshots: true,
-      force: true,
-      api_key: app_store_connect_api_key(
-        key_id: "4H4SNV6S4X",
-        issuer_id: "5a79245e-a76f-45fc-b6d7-c1282c9063c6",
-        key_filepath: "./AuthKey_4H4SNV6S4X.p8"
-      ),
-      app_identifier: "com.rajeshapp.ios",
-      team_id: "BW7PGH2KRS",
-      automatic_release: true
-    )
-  end
-end
+name: build-ios-app
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0' # specify the Ruby version if needed
+      - name: Install dependencies
+        run: |
+          cd ios
+          bundle install
+      - name: Navigate to fastlane directory and run Fastlane
+        run: |
+          cd ios/fastlane
+          bundle exec fastlane release_app
+        env:
+          APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # if you're using fastlane match for provisioning profiles
