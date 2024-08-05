@@ -13,13 +13,13 @@ platform :ios do
       workspace: "firstApp.xcworkspace",
       scheme: "firstApp",
       clean: true,
-      export_xcargs: "-allowProvisioningUpdates", # Allows automatic profile updates
+      export_xcargs: "-allowProvisioningUpdates", 
       output_name: "ReleaseApp.ipa",
       output_directory: "./build",
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "com.rajeshapp.ios" => "./fastlane/com.rajeshapp.ios.mobileprovision" # Path to provisioning profile
+          "com.rajeshapp.ios" => "com.rajeshapp.ios.mobileprovision" 
         }
       }
     )
