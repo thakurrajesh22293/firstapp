@@ -1,41 +1,14 @@
-name: iOS Deployment
-
+name: build-ios-app
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
-
+      - 'main'
 jobs:
   build:
     runs-on: macos-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0
-
-      - name: Install dependencies
-        run: |
-          gem install bundler
-          cd ios
-          bundle install
-
-      - name: Install Fastlane
-        run: |
-          gem install fastlane
-          cd ios
-          bundle exec fastlane --version
-
-      - name: Run Xcode build with provisioning updates
-        run: |
-          cd ios
-          xcodebuild -workspace firstApp.xcworkspace -scheme firstapp -configuration Release -allowProvisioningUpdates
+      - uses: actions/checkout@v2
+      - run: fastlane release_app
         env:
-          # Add any environment variables here
           APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
-          CI: true
+       
