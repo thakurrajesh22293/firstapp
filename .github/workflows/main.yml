@@ -8,7 +8,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - run: fastlane release_app
+      - name: Navigate to fastlane directory
+        run: cd ios/fastlane
+      - name: Run Fastlane
+        run: fastlane release_app
         env:
           APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
-       
