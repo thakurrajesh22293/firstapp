@@ -31,7 +31,7 @@ jobs:
       - name: Navigate to fastlane directory and run Fastlane
         run: |
           cd ios/fastlane
-          bundle exec fastlane release_app
+          bundle  fastlane release_app
         env:
           APP_STORE_CONNECT_API_KEY_PATH: ./AuthKey_4H4SNV6S4X.p8
           #MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # if you're using fastlane match for provisioning profiles
